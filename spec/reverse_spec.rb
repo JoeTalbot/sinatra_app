@@ -1,26 +1,18 @@
-require_relative '..\reverse.rb'
+require_relative '../reverse.rb'
 require 'rack/test'
+require 'simplecov'
 
+SimpleCov.start
 set :environment, :test
 
 def app
     Sinatra::Application
 end
 
-describe 'Reverse Service' do 
+describe 'check port' do
     include Rack::Test::Methods
-    it "should load the home page" do
-        get '/' 
-        last_response.should be_ok
-    end
-    
-    it "should load the nonereal page" do
-        get '/nonereal' 
-        last_response.should be_ok
-    end
-    
-    it "should reverse the posted values as well" do
-        post '/', params = { :str => 'Jeff'}
-        last_response.body.should == 'ffeJ'        
+    it "should report if the localhost port is open" do
+        get '/check_ports/ip/localhost/port/4567'
+        last_response.body.should == 'The port is open'
     end
 end
